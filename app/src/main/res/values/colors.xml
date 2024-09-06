@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#0F9D58</color>
+    <color name="colorPrimaryDark">#056008</color>
+    <color name="colorAccent">#E39D36</color>
+    <color name="bali_hai">#87939D</color>
+    <color name="purple">#004869</color>
+    <color name="gray">#8E8E8E</color>
+    <color name="light_gray">#E8E8E8</color>
+    <color name="light_sky_blue">#D8F1F0</color>
+    <color name="light_black">#7E000000</color>
+    <color name="black_food_bg">#100F1F</color>
+    <color name="view_black">#8A8E8E8E</color>
+    <color name="light_green">#0F9D58</color>
+    <color name="light_white_gray">#D0D0D0</color>
+    <color name="white_gray">#4D80804D</color>
+    <color name="sky_blue_bg">#2660BCDF</color>
+    <color name="smoke_green">#00ad61</color>
+    <color name="prussian_blue">#004869</color>
+    <color name="dark_grayish_blue">#2A303E</color>
+    <color name="Sandstone">#87939D</color>
+    <color name="darker">#202A32</color>
+    <color name="green_darker">#207060</color>
+    <color name="black_darker">#141921</color>
+    <color name="darker_green">#00AE83</color>
+</resources>
