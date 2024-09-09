@@ -1,29 +1,32 @@
 package com.qtonz.fragement.dynamic
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.qtonz.fragement.R
 import com.qtonz.fragement.databinding.ActivityChatDetailsBinding
 import com.qtonz.fragement.dynamic.adapter.ChatAdapter
 import com.qtonz.fragement.dynamic.data.ChatMessage
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EmployeDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var chatAdapter: ChatAdapter
-    private lateinit var editText: EditText
-    private val IMAGE_PICK_CODE = 1001
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUris: List<Uri> = emptyList()
     private val chatList = mutableListOf<ChatMessage>()
+    private val currentTime =
+        SimpleDateFormat("hh:mm a", java.util.Locale.getDefault()).format(Date())
 
-    val binding: ActivityChatDetailsBinding by lazy {
+    private val binding: ActivityChatDetailsBinding by lazy {
         ActivityChatDetailsBinding.inflate(layoutInflater)
     }
 
@@ -31,17 +34,16 @@ class EmployeDetailsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         chatAdapter = ChatAdapter(chatList)
         binding.chat.layoutManager = LinearLayoutManager(this)
         binding.chat.adapter = chatAdapter
 
-        editText = findViewById(R.id.editText)
-
-        editText.setOnTouchListener { v, event ->
+        binding.editText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = editText.compoundDrawables[2]
-                if (drawableEnd != null && event.rawX >= (editText.right - drawableEnd.bounds.width())) {
-                    openImagePicker()
+                val drawableEnd = binding.editText.compoundDrawables[2]
+                if (drawableEnd != null && event.rawX >= (binding.editText.right - drawableEnd.bounds.width())) {
+                    pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     return@setOnTouchListener true
                 }
             }
@@ -71,43 +73,58 @@ class EmployeDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.floatingActionButton -> {
-                if (selectedImageUri != null) {
-                    chatList.add(ChatMessage("", true, selectedImageUri))
-                    selectedImageUri = null // Reset after sending the image
+                if (selectedImageUris.isNotEmpty()) {
+                    selectedImageUris.forEach { uri ->
+                        chatList.add(ChatMessage("", true, uri, currentTime))
+                        chatList.add(
+                            ChatMessage(
+                                "${selectedImageUris.indexOf(uri)}", false, null, currentTime
+                            )
+                        )
+                    }
+                    selectedImageUris = emptyList()
                 } else {
                     val userMessage = binding.editText.text.toString().trim()
                     if (userMessage.isNotEmpty()) {
-                        chatList.add(ChatMessage(userMessage, true))
+                        chatList.add(ChatMessage(userMessage, true, null, currentTime))
 
                         val botResponse = when (userMessage.lowercase()) {
                             "hii" -> "hii am a bot"
                             "i am shivang" -> "how are you"
                             else -> "Sample system reply"
                         }
-                        chatList.add(ChatMessage(botResponse, false))
+                        chatList.add(ChatMessage(botResponse, false, null, currentTime))
 
                         chatAdapter.notifyDataSetChanged()
                         binding.chat.scrollToPosition(chatList.size - 1)
                         binding.editText.text.clear()
                     }
                 }
-
                 chatAdapter.notifyDataSetChanged()
             }
         }
     }
 
-    private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
-    @Deprecated("This method is deprecated. Use Activity Result API.")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data
+    private val pickMultipleMedia =
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+            if (uris.isNotEmpty()) {
+                Log.d("PhotoPicker", "Number of items selected: ${uris.size}")
+                selectedImageUris = uris
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
         }
-    }
 }
+
+
+//    private fun openImagePicker() {
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.type = "image/*"
+//        startActivityForResult(intent, IMAGE_PICK_CODE)
+//    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK && data != null) {
+//            selectedImageUri = data.data
+//        }
+//    }

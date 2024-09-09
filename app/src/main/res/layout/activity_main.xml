@@ -33,4 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dyamic_fragment"/>
+    <Button
+        android:id="@+id/btnRadioButtomAdapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/radio_button_adapter"/>
 </LinearLayout>

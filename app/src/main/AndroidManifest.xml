@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Fragement"
         tools:targetApi="31">
         <activity
+            android:name=".radiobuttonadapter.activity.RadioButtonActivity"
+            android:exported="false" />
+        <activity
             android:name=".dynamic.EmployeDetailsActivity"
             android:exported="false" />
         <activity

@@ -20,4 +20,6 @@
     <string name="dyamic_fragment">Dyamic Fragment</string>
     <string name="todo">TODO</string>
     <string name="send">send</string>
+    <string name="select_a_icon">Select a Icon</string>
+    <string name="radio_button_adapter">Radio Button Adapter</string>
 </resources>

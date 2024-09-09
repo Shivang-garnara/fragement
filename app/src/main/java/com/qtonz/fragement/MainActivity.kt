@@ -11,6 +11,7 @@ import com.qtonz.fragement.activitys.SimpleSliderActivity
 import com.qtonz.fragement.activitys.ViewPagerActivity
 import com.qtonz.fragement.databinding.ActivityMainBinding
 import com.qtonz.fragement.dynamic.WhatsappMainActivity
+import com.qtonz.fragement.radiobuttonadapter.activity.RadioButtonActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val binding by lazy {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnViewPager.setOnClickListener(this)
         binding.btnSimpleSlider.setOnClickListener(this)
         binding.btnDyamicFragment.setOnClickListener(this)
+        binding.btnRadioButtomAdapter.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -67,6 +69,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(
                     Intent(
                         this@MainActivity, WhatsappMainActivity::class.java
+                    )
+                )
+            }
+            R.id.btnRadioButtomAdapter ->{
+                startActivity(
+                    Intent(
+                        this@MainActivity, RadioButtonActivity::class.java
                     )
                 )
             }
